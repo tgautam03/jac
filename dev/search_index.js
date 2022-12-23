@@ -1,3 +1,3 @@
 var documenterSearchIndex = {"docs":
-[{"location":"#jac.jl","page":"jac.jl","title":"jac.jl","text":"","category":"section"},{"location":"","page":"jac.jl","title":"jac.jl","text":"Documentation for jac.jl","category":"page"}]
+[{"location":"#JAC","page":"JAC","title":"JAC","text":"","category":"section"},{"location":"","page":"JAC","title":"JAC","text":"JACobian is a lightweight Reverse Mode Automatic Differentiation library written from scratch in Julia. The journey starts with the package generation, details for which can be accessed here.","category":"page"}]
 }
