@@ -4,7 +4,16 @@ using jac
 makedocs(
     sitename = "jac",
     format = Documenter.HTML(),
-    modules = [jac]
+    modules = [jac],
+    pages = [
+        "Home" => "index.md",
+        "Development" => Any[
+            "Development/test.md",
+        ],
+        "Examples" => Any[
+            "Examples/test.md",
+        ],
+    ],
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
