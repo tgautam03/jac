@@ -31,12 +31,9 @@ $$B =
 $$C = A + B = 8 \\
 D = C * B = 24$$
 
-The above defined computations can be written as a graph shown in Figure 1.
+The above defined computations can be written as a graph shown in figure below.
 
-<div class="imgcap">
-<img src="https://raw.githubusercontent.com/tgautam03/jac/master/docs/src/img/Forward.png">
-<div class="thecap">Figure 1: Computations as a graph </div>
-</div>
+![Forward](../img/Forward.png)
 
 Now, if we want to compute say $\frac{\partial D}{\partial B}$, we just backtrack on the paths from $D$ to $B$ and add up the values of the paths. Let's look at this again:
 - We can see that $D$ results from $C$ and $B$
@@ -48,10 +45,8 @@ Now, if we want to compute say $\frac{\partial D}{\partial B}$, we just backtrac
         - Using chain rule **along this path**, we can write $\hat{\frac{\partial D}{\partial B}}=\hat{\frac{\partial D}{\partial C}}*\hat{\frac{\partial C}{\partial B}}=B*1=3$.
 - Now, we have $\hat{\frac{\partial D}{\partial B}}$ from two different paths which merge together, hence to get final answer we just add them up and get $11$.
 
-<div class="imgcap">
-<img src="https://raw.githubusercontent.com/tgautam03/jac/master/docs/src/img/Backward.png">
-<div class="thecap">Figure 1: Gradient Computations through a graph </div>
-</div>
+![Backward](../img/Backward.png)
+
 
 Let's now dig into the coding details.
 
