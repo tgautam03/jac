@@ -7,7 +7,7 @@ makedocs(
     modules = [jac],
     pages = [
         "Home" => "index.md",
-        "Development" => Any[
+        "Development Blogs" => Any[
             "Development/test.md",
         ],
         "Examples" => Any[
