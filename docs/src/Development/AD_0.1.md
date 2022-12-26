@@ -18,34 +18,28 @@ Following topics are covered in this post:
 
 The framework for AD is all about graph. Let's look at how this works with a simple example:
 
-$$
-A = 
+$$A = 
 \begin{bmatrix}
 5 
-\end{bmatrix}
-$$
+\end{bmatrix}$$
 
-$$
-B = 
+$$B = 
 \begin{bmatrix}
 3 
-\end{bmatrix}
-$$
+\end{bmatrix}$$
 
-$$
-C = A + B = 8 \\
-D = C * B = 24
-$$
+$$C = A + B = 8 \\
+D = C * B = 24$$
 
 The above defined computations can be written as a graph shown in Figure 1.
 
 <div class="imgcap">
-<img src="../img/Forward.png">
+<img src="https://raw.githubusercontent.com/tgautam03/jac/master/docs/src/img/Forward.png">
 <div class="thecap">Figure 1: Computations as a graph </div>
 </div>
 
 Now, if we want to compute say $\frac{\partial D}{\partial B}$, we just backtrack on the paths from $D$ to $B$ and add up the values of the paths. Let's look at this again:
-- $D$ results from $C$ and $B$
+- We can see that $D$ results from $C$ and $B$
     - **The path along $B$**: 
         - We can write **local gradient** of $D$ with respect to $B$ as equal to $C$, i.e. $\hat{\frac{\partial D}{\partial B}}=C=8$
     - **The path along $C$**: 
@@ -55,7 +49,7 @@ Now, if we want to compute say $\frac{\partial D}{\partial B}$, we just backtrac
 - Now, we have $\hat{\frac{\partial D}{\partial B}}$ from two different paths which merge together, hence to get final answer we just add them up and get $11$.
 
 <div class="imgcap">
-<img src="../img/Backward.png">
+<img src="https://raw.githubusercontent.com/tgautam03/jac/master/docs/src/img/Backward.png">
 <div class="thecap">Figure 1: Gradient Computations through a graph </div>
 </div>
 
