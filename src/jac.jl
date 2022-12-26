@@ -13,4 +13,8 @@ include("Utils.jl")
 export print
 export println
 
+# Including autograd
+include("autograd.jl")
+export grad
+
 end # module jac
