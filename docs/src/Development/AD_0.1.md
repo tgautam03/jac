@@ -56,13 +56,19 @@ I'll start by defining a custom `Tensor` type which will handle the data and aro
 
 ```julia
 mutable struct Tensor
-    val::Array          # Value of Tensor
-    creators::Vector    # Parents of this Tensor
-    local_grads::Vector # Local Gradient wrt creators
+    val::Union{Number, Array}   # Value of Tensor
+    creators::Vector            # Parents of this Tensor
+    grads::Vector               # Functions that multiply the path value (Gradient value coming from ahead in the graph) and Local Gradient wrt creators
 
     # Constructor 1
     function Tensor(val::Array)
         new(val, [], [])
+    end
+
+    # Constructor 2
+    function Tensor(val::Union{Number,Array}, creators::Vector{Tensor}, grads::Vector)
+        @assert (size(creators)[1] == size(grads)[1]) # Make sure grads for each creator is provided
+        new(val, creators, grads)
     end
 end
 ```
@@ -70,9 +76,9 @@ end
 `Tensor` is a `mutable struct` type which holds:
 - Julia's inbuild `Array` type (for now I'm only concerned about computations on CPU but I'll add GPU support later) as the `val`ue of the `Tensor`.
 - `creators` store the `Tensor`s used to create this `Tensor`, i.e. the parents.
-- `local_grads` contain the gradient of `Tensor` with respect to each of it's parents.  
+- `grads` contain the function that evaluates the gradient of `Tensor` with respect to the output node in the graph.  
 
-A **constructor** is defined which accepts only `Array` type and initialises `val` with it (rest is kept empty). This will define the **leaf nodes** in the graph. 
+A **constructor** is defined which accepts only `Number` and `Array` type and initialises `val` with it (rest is kept empty). This will define the **leaf nodes** in the graph. 
 
 Another constructor is defined that will mainly be used to create intermediate `Tensor`s by several operations (like addition or multiplication). 
 
@@ -83,16 +89,21 @@ Adding addition and multiplication support to `Tensor`s is very easy, thanks to 
 ```julia
 # Addition Operation on Tensor types
 function Base.:+(T1::Tensor, T2::Tensor)
-    return Tensor(T1.val + T2.val, [T1, T2], [ones(size(T1)), ones(size(T2))])
+    val = T1.val + T2.val
+    creators = [T1, T2]
+    # Making use of lambda functions
+    grads = [path_val -> path_val .* ones(size(T1)), path_val -> path_val .* ones(size(T2))]
+
+    return Tensor(val, creators, grads)
 end
 
 # Multiplication Operation on Tensor types
 function Base.:*(T1::Tensor, T2::Tensor)
-    return Tensor(T1.val * T2.val, [T1, T2], [T2.val, T1.val])
+    return Tensor(T1.val * T2.val, [T1, T2], [path_val -> path_val * T2.val, path_val -> T1.val * path_val])
 end
 ```
 
-> I've defined several utility functions like `println`, `print`, `size`, etc for `Tensor` type too.
+> Note that this will only work for scalars (i.e. $1 \times 1$ matrix). I'll add support for full Matrix Multiplication and broadcasting later.
 
 ## Automatic Differentiation 
 
@@ -108,9 +119,9 @@ function grad(T1::Tensor)
         T: Gradient of Tensor T
         path_value: The gradient value coming from T's children
         =#
-        for (creator, local_grad) in zip(T.creators, T.local_grads)
+        for (creator, grad_function) in zip(T.creators, T.grads)
             # Applying Chain Rule
-            creator_path_value = path_value .* local_grad
+            creator_path_value = grad_function(path_value)
 
             if haskey(gradients, creator)
                 # Add the gradients where paths merge
