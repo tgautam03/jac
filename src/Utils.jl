@@ -4,7 +4,7 @@ include("Tensor.jl")
 
 # Printing Tensor Nicely
 function Base.show(io::IO, T::Tensor)
-    print(io, "Value = $(T.val)\nLocal Gradients = $(T.grads)")
+    print(io, "Value = $(T.val)\n")
 end
 
 # size function on Tensor
