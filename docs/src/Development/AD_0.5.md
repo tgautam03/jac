@@ -139,7 +139,7 @@ end
 
 Amazingly, we're all set. AD written this way enables modularity such that I can add any operations (along with the chain rule formula) and everything will work automatically. 
 
-> For more details regarding usage check out [this post]().
+> For more details regarding usage check out [this post](https://tgautam03.github.io/jac/dev/Examples/Basic_NN/).
 
 ## References
 - This work is completely inspired (and I learnt mostly) from this excellent [blog post](https://sidsite.com/posts/autodiff/) by Sidney Radcliffe who also maintains [Small Pebbel](https://github.com/sradc/SmallPebble).
