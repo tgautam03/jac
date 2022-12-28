@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Automatic Differentiation for Simple Neural Netowrks · jac</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">jac</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Development Blogs</span><ul><li><a class="tocitem" href="../AD_0.1/">Automatic Differentiation v0.1</a></li><li class="is-active"><a class="tocitem" href>Automatic Differentiation for Simple Neural Netowrks</a><ul class="internal"><li><a class="tocitem" href="#Topics-Covered"><span>Topics Covered</span></a></li><li><a class="tocitem" href="#Expanding-Operations"><span>Expanding Operations</span></a></li><li><a class="tocitem" href="#References"><span>References</span></a></li></ul></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../Examples/Intro_AD/">Introduction to Automatic Differentiation using JAC</a></li><li><a class="tocitem" href="../../Examples/Basic_NN/">A Simple Neural Network in JAC</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Development Blogs</a></li><li class="is-active"><a href>Automatic Differentiation for Simple Neural Netowrks</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Automatic Differentiation for Simple Neural Netowrks</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/tgautam03/jac/blob/master/docs/src/Development/AD_0.5.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Automatic-Differentiation-for-Simple-Neural-Netowrks"><a class="docs-heading-anchor" href="#Automatic-Differentiation-for-Simple-Neural-Netowrks">Automatic Differentiation for Simple Neural Netowrks</a><a id="Automatic-Differentiation-for-Simple-Neural-Netowrks-1"></a><a class="docs-heading-anchor-permalink" href="#Automatic-Differentiation-for-Simple-Neural-Netowrks" title="Permalink"></a></h1><h2 id="Topics-Covered"><a class="docs-heading-anchor" href="#Topics-Covered">Topics Covered</a><a id="Topics-Covered-1"></a><a class="docs-heading-anchor-permalink" href="#Topics-Covered" title="Permalink"></a></h2><p>Following topics are covered in this post:</p><ul><li>Adapting Automatic Differentiation (AD) for several Matrix Operations like:<ul><li>Matrix-Matrix Multiplication</li><li>Matrix Addition (Including support for broadcasting)</li><li>Summation and Power oprations</li></ul></li></ul><h2 id="Expanding-Operations"><a class="docs-heading-anchor" href="#Expanding-Operations">Expanding Operations</a><a id="Expanding-Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Expanding-Operations" title="Permalink"></a></h2><p>It&#39;s very easy to expand operations to support matrices as it only involves understanding of chain rule involving matrices.</p><h3 id="Addition-and-Subtraction"><a class="docs-heading-anchor" href="#Addition-and-Subtraction">Addition and Subtraction</a><a id="Addition-and-Subtraction-1"></a><a class="docs-heading-anchor-permalink" href="#Addition-and-Subtraction" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Addition Operation on Tensor types
+function Base.:+(T1::Tensor, T2::Tensor)
+    if size(T1) == size(T2) 
+        val = T1.val + T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; path_val .* ones(size(T1)), path_val -&gt; path_val .* ones(size(T2))]
+
+        return Tensor(val, creators, grads)
+
+    elseif (size(T1)[1] == size(T2)[1] &amp;&amp; size(T1)[2] == 1) # Broadcasting along columns when T1 is Vector
+        val = T1.val .+ T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; sum(path_val .* ones(size(T1)), dims=2), path_val -&gt; path_val .* ones(size(T2))]
+
+        return Tensor(val, creators, grads)
+
+    elseif (size(T1)[1] == size(T2)[1] &amp;&amp; size(T2)[2] == 1) # Broadcasting along columns when T2 is Vector
+        val = T1.val .+ T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; path_val .* ones(size(T1)), path_val -&gt; sum(path_val .* ones(size(T2)), dims=2)]
+
+        return Tensor(val, creators, grads)
+
+    elseif (size(T1)[2] == size(T2)[2] &amp;&amp; size(T1)[1] == 1) # Broadcasting along rows when T1 is Vector
+        val = T1.val .+ T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; sum(path_val .* ones(size(T1)), dims=1), path_val -&gt; path_val .* ones(size(T2))]
+
+        return Tensor(val, creators, grads)
+
+    elseif (size(T1)[2] == size(T2)[2] &amp;&amp; size(T2)[1] == 1) # Broadcasting along rows when T2 is Vector
+        val = T1.val .+ T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; path_val .* ones(size(T1)), path_val -&gt; sum(path_val .* ones(size(T2)), dims=1)]
+
+        return Tensor(val, creators, grads)
+
+    else
+        throw(DomainError(ch, &quot;Tensor dims mismatch&quot;))
+    end
+end</code></pre><pre><code class="language-julia hljs"># Subtraction Operation on Tensor types
+function Base.:-(T1::Tensor, T2::Tensor)
+    if size(T1) == size(T2)
+        val = T1.val - T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; path_val .* ones(size(T1)), path_val -&gt; -1 .* path_val .* ones(size(T2))]
+
+        return Tensor(val, creators, grads)
+
+    elseif (size(T1)[1] == size(T2)[1] &amp;&amp; size(T1)[2] == 1) # Broadcasting along columns when T1 is Vector
+        val = T1.val .- T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; sum(path_val .* ones(size(T1)), dims=2), path_val -&gt; -1 .* path_val .* ones(size(T2))]
+
+        return Tensor(val, creators, grads)
+
+    elseif (size(T1)[1] == size(T2)[1] &amp;&amp; size(T2)[2] == 1) # Broadcasting along columns when T2 is Vector
+        val = T1.val .- T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; path_val .* ones(size(T1)), path_val -&gt; sum(-1 .* path_val .* ones(size(T2)), dims=2)]
+
+        return Tensor(val, creators, grads)
+
+    elseif (size(T1)[2] == size(T2)[2] &amp;&amp; size(T1)[1] == 1) # Broadcasting along rows when T1 is Vector
+        val = T1.val .- T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; sum(path_val .* ones(size(T1)), dims=1), path_val -&gt; -1 .* path_val .* ones(size(T2))]
+
+        return Tensor(val, creators, grads)
+
+    elseif (size(T1)[2] == size(T2)[2] &amp;&amp; size(T2)[1] == 1) # Broadcasting along rows when T2 is Vector
+        val = T1.val .- T2.val
+        creators = [T1, T2]
+        grads = [path_val -&gt; path_val .* ones(size(T1)), path_val -&gt; sum(-1 .* path_val .* ones(size(T2)), dims=1)]
+
+        return Tensor(val, creators, grads)
+
+    else
+        throw(DomainError(ch, &quot;Tensor dims mismatch&quot;))
+    end
+end</code></pre><h3 id="Matrix-Matrix-Multiplication"><a class="docs-heading-anchor" href="#Matrix-Matrix-Multiplication">Matrix-Matrix Multiplication</a><a id="Matrix-Matrix-Multiplication-1"></a><a class="docs-heading-anchor-permalink" href="#Matrix-Matrix-Multiplication" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Multiplication Operation on Tensor types
+function Base.:*(T1::Tensor, T2::Tensor)
+    return Tensor(T1.val * T2.val, [T1, T2], [path_val -&gt; path_val * transpose(T2.val), path_val -&gt; transpose(T1.val) * path_val])
+end</code></pre><h3 id="Sum,-Power-and-Division-Operations"><a class="docs-heading-anchor" href="#Sum,-Power-and-Division-Operations">Sum, Power and Division Operations</a><a id="Sum,-Power-and-Division-Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Sum,-Power-and-Division-Operations" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Sum function
+function Base.:sum(T::Tensor)
+    return Tensor(sum(T.val), [T], [path_val -&gt; path_val .* ones(size(T))])
+end</code></pre><pre><code class="language-julia hljs"># Power Operation
+function Base.:^(T::Tensor, power::Int)
+    val = T.val .^ power
+    creators = [T]
+    grads = [path_val -&gt; path_val .* power .* (T.val .^ (power-1))]
+
+    return Tensor(val, creators, grads)
+end</code></pre><pre><code class="language-julia hljs"># Division by Scalar
+function Base.:/(T::Tensor, divisor::Real)
+    val = T.val ./ divisor
+    creators = [T]
+    grads = [path_val -&gt; path_val ./ divisor]
+
+    return Tensor(val, creators, grads)
+end</code></pre><p>Amazingly, we&#39;re all set. AD written this way enables modularity such that I can add any operations (along with the chain rule formula) and everything will work automatically. </p><blockquote><p>For more details regarding usage check out <a href="Development/">this post</a>.</p></blockquote><h2 id="References"><a class="docs-heading-anchor" href="#References">References</a><a id="References-1"></a><a class="docs-heading-anchor-permalink" href="#References" title="Permalink"></a></h2><ul><li>This work is completely inspired (and I learnt mostly) from this excellent <a href="https://sidsite.com/posts/autodiff/">blog post</a> by Sidney Radcliffe who also maintains <a href="https://github.com/sradc/SmallPebble">Small Pebbel</a>.</li><li>Trask, Andrew W. Grokking deep learning. Simon and Schuster, 2019.</li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../AD_0.1/">« Automatic Differentiation v0.1</a><a class="docs-footer-nextpage" href="../../Examples/Intro_AD/">Introduction to Automatic Differentiation using JAC »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Wednesday 28 December 2022 02:57">Wednesday 28 December 2022</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
