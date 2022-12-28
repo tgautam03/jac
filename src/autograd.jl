@@ -3,15 +3,15 @@ include("Tensor.jl")
 function grad(T1::Tensor)
     gradients = Dict() # Dictionary to hold gradients wrt T1
 
-    function compute_gradients(T::Tensor, path_value::Array)
+    function compute_gradients(T::Tensor, path_value::Union{Real,Array})
         #=
         Description: # Function to fill up the gradients Dictionary initialised above
         T: Gradient of Tensor T
         path_value: The gradient value coming from T's children
         =#
-        for (creator, local_grad) in zip(T.creators, T.local_grads)
+        for (creator, grad_function) in zip(T.creators, T.grads)
             # Applying Chain Rule
-            creator_path_value = path_value .* local_grad
+            creator_path_value = grad_function(path_value)
 
             if haskey(gradients, creator)
                 # Add the gradients where paths merge
@@ -30,4 +30,4 @@ function grad(T1::Tensor)
     compute_gradients(T1, ones(size(T1)))
 
     return gradients
-end
+end 

@@ -6,15 +6,19 @@ export Tensor
 
 # Including and Exporting Operations
 include("Ops.jl")
+export *
 export +
+export -
+export sum
+export ^
+export /
 
 # Including and Exporting Utilities functions
 include("Utils.jl")
-export print
-export println
+export show
+export size
 
 # Including autograd
-include("autograd.jl")
-export grad
+include("AutoGrad.jl")
 
 end # module jac

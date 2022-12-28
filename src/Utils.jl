@@ -3,12 +3,8 @@ using Base
 include("Tensor.jl")
 
 # Printing Tensor Nicely
-function Base.print(T::Tensor)
-    print(T.val)
-end
-
-function Base.println(T::Tensor)
-    println(T.val)
+function Base.show(io::IO, T::Tensor)
+    print(io, "Value = $(T.val)\nLocal Gradients = $(T.grads)")
 end
 
 # size function on Tensor
