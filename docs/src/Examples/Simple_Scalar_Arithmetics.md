@@ -24,7 +24,7 @@ $$\frac{\partial d}{\partial c} = b = 3$$
 ### Automatic Differentiation
 - Importing the library.
     ```julia
-    using JAC
+    using jac
     ```
 - Initialising variables
     ```julia

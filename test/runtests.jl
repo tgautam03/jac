@@ -1,5 +1,5 @@
 using Test
-using JAC
+using jac
 
 function test1()
     a = Tensor(5)

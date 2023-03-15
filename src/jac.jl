@@ -1,4 +1,4 @@
-module JAC
+module jac
 
 include("Tensor.jl")
 export Tensor
