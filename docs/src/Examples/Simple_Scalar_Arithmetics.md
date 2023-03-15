@@ -45,15 +45,15 @@ d = c * b
 ∂d = jac.autograd(d)
 ```
 
-    - To get $\frac{\partial d}{\partial a}$
-    ```julia
-    ∂d[a]
-    ```
-    - To get $\frac{\partial d}{\partial b}$
-    ```julia
-    ∂d[b]
-    ```
-    - To get $\frac{\partial d}{\partial c}$
-    ```julia
-    ∂d[c]
-    ```
+- To get $\frac{\partial d}{\partial a}$
+```julia
+∂d[a]
+```
+- To get $\frac{\partial d}{\partial b}$
+```julia
+∂d[b]
+```
+- To get $\frac{\partial d}{\partial c}$
+```julia
+∂d[c]
+```
