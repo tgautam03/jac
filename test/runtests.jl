@@ -6,7 +6,7 @@ function test1()
     b = Tensor(3)
     c = a + b
     d = b * c
-    ∂d = JAC.autograd(d)
+    ∂d = jac.autograd(d)
 
     cond1 = (c.val == 8)
     cond2 = (d.val == 24)
