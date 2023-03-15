@@ -1,1 +1,0 @@
-# Reverse Mode Automatic Differentiation (Scalar support only)
