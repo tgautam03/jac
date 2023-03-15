@@ -1,2 +1,119 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Reverse Mode Automatic Differentiation (Scalar support only) · jac</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">jac</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Development Blogs</span><ul><li class="is-active"><a class="tocitem" href>Reverse Mode Automatic Differentiation (Scalar support only)</a></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../Examples/Simple_Scalar_Arithmetics/">Introduction to Reverse Mode Automatic Differentiation</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Development Blogs</a></li><li class="is-active"><a href>Reverse Mode Automatic Differentiation (Scalar support only)</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Reverse Mode Automatic Differentiation (Scalar support only)</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/tgautam03/jac/blob/master/docs/src/Development/Scalar_AD.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Reverse-Mode-Automatic-Differentiation-(Scalar-support-only)"><a class="docs-heading-anchor" href="#Reverse-Mode-Automatic-Differentiation-(Scalar-support-only)">Reverse Mode Automatic Differentiation (Scalar support only)</a><a id="Reverse-Mode-Automatic-Differentiation-(Scalar-support-only)-1"></a><a class="docs-heading-anchor-permalink" href="#Reverse-Mode-Automatic-Differentiation-(Scalar-support-only)" title="Permalink"></a></h1></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../Examples/Simple_Scalar_Arithmetics/">Introduction to Reverse Mode Automatic Differentiation »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Wednesday 15 March 2023 01:36">Wednesday 15 March 2023</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Reverse Mode Automatic Differentiation (Scalar support only) · jac</title><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">jac</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Development Blogs</span><ul><li class="is-active"><a class="tocitem" href>Reverse Mode Automatic Differentiation (Scalar support only)</a><ul class="internal"><li><a class="tocitem" href="#Tensor-type"><span><code>Tensor</code> type</span></a></li><li><a class="tocitem" href="#Operations"><span>Operations</span></a></li><li><a class="tocitem" href="#AutoGrad"><span>AutoGrad</span></a></li><li><a class="tocitem" href="#Conclusion"><span>Conclusion</span></a></li></ul></li></ul></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../Examples/Simple_Scalar_Arithmetics/">Introduction to Reverse Mode Automatic Differentiation on Scalars</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Development Blogs</a></li><li class="is-active"><a href>Reverse Mode Automatic Differentiation (Scalar support only)</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Reverse Mode Automatic Differentiation (Scalar support only)</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/tgautam03/jac/blob/master/docs/src/Development/Scalar_AD.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Reverse-Mode-Automatic-Differentiation-(Scalar-support-only)"><a class="docs-heading-anchor" href="#Reverse-Mode-Automatic-Differentiation-(Scalar-support-only)">Reverse Mode Automatic Differentiation (Scalar support only)</a><a id="Reverse-Mode-Automatic-Differentiation-(Scalar-support-only)-1"></a><a class="docs-heading-anchor-permalink" href="#Reverse-Mode-Automatic-Differentiation-(Scalar-support-only)" title="Permalink"></a></h1><p><strong>Development of the code in this article with proper explaination can be seen in <a href="https://www.youtube.com/watch?v=VT7yjy2Lb8k">this YouTube video</a>.</strong></p><h2 id="Tensor-type"><a class="docs-heading-anchor" href="#Tensor-type"><code>Tensor</code> type</a><a id="Tensor-type-1"></a><a class="docs-heading-anchor-permalink" href="#Tensor-type" title="Permalink"></a></h2><p>I start by creating a custom <code>Tensor</code> type which will hold the variables and the structure of the computational graph. Code can be seen in <a href="https://github.com/tgautam03/jac/blob/master/src/Tensor.jl">Tensor.jl file</a>.</p><pre><code class="language-julia hljs">mutable struct Tensor
+	val::Number 		# Value of the Tensor
+	parents::Vector 	# Parents of the Tensor
+	grad_fns::Vector 	# Gradient functions wrt parents
+
+	# Constructor to initialise the Tensor
+	function Tensor(val::Number)
+		new(val, [], [])
+	end
+
+	# Constructor to create Tensor using operations
+	function Tensor(val::Number, parents::Vector{Tensor}, grad_fns::Vector)
+		@assert size(parents) == size(grad_fns)
+		new(val, parents, grad_fns)
+	end
+end</code></pre><h2 id="Operations"><a class="docs-heading-anchor" href="#Operations">Operations</a><a id="Operations-1"></a><a class="docs-heading-anchor-permalink" href="#Operations" title="Permalink"></a></h2><p>Next, I defined the basic operations on the <code>Tensor</code> type. Code can be seen in <a href="https://github.com/tgautam03/jac/tree/master/src/Ops">Ops folder</a>.</p><h3 id="Addition"><a class="docs-heading-anchor" href="#Addition">Addition</a><a id="Addition-1"></a><a class="docs-heading-anchor-permalink" href="#Addition" title="Permalink"></a></h3><pre><code class="language-julia hljs">function Base.:+(T1::Tensor, T2::Tensor)
+	val = T1.val + T2.val
+	parents = [T1, T2]
+
+	# Grad Functions
+	dT1 = path_val -&gt; path_val * 1
+	dT2 = path_val -&gt; path_val * 1
+	grad_fns = [dT1, dT2]
+
+	return Tensor(val, parents, grad_fns)
+end
+
+
+function Base.:+(n::Number, T2::Tensor)
+    val = n + T2.val
+    parents = [T2]
+    
+    # Gradient Functions
+    dT2 = path_val -&gt; path_val * 1
+    grad_fns = [dT2]
+    
+    return Tensor(val, parents, grad_fns)
+end
+
+
+function Base.:+(T1::Tensor, n::Number)
+    val = T1.val + n
+    parents = [T1]
+    
+    # Gradient Functions
+    dT1 = path_val -&gt; path_val * 1
+    grad_fns = [dT1]
+    
+    return Tensor(val, parents, grad_fns)
+end</code></pre><h3 id="Multiplication"><a class="docs-heading-anchor" href="#Multiplication">Multiplication</a><a id="Multiplication-1"></a><a class="docs-heading-anchor-permalink" href="#Multiplication" title="Permalink"></a></h3><pre><code class="language-julia hljs">function Base.:*(T1::Tensor, T2::Tensor)
+    val = T1.val * T2.val
+    parents = [T1, T2]
+    
+    # Gradient Functions
+    dT1 = path_val -&gt; path_val * T2
+    dT2 = path_val -&gt; path_val * T1
+    grad_fns = [dT1, dT2]
+    
+    return Tensor(val, parents, grad_fns)
+end
+
+
+function Base.:*(n::Number, T2::Tensor)
+    val = n * T2.val
+    parents = [T2]
+    
+    # Gradient Functions
+    dT2 = path_val -&gt; path_val * n
+    grad_fns = [dT2]
+    
+    return Tensor(val, parents, grad_fns)
+end
+
+
+function Base.:*(T1::Tensor, n::Number)
+    val = T1.val * n
+    parents = [T1]
+    
+    # Gradient Functions
+    dT1 = path_val -&gt; path_val * n
+    grad_fns = [dT1]
+    
+    return Tensor(val, parents, grad_fns)
+end</code></pre><h3 id="Power"><a class="docs-heading-anchor" href="#Power">Power</a><a id="Power-1"></a><a class="docs-heading-anchor-permalink" href="#Power" title="Permalink"></a></h3><pre><code class="language-julia hljs">function Base.:^(T::Tensor, n::Number)
+	val = T.val^n
+	parents = [T]
+
+	# Grad Functions
+	dT = path_val -&gt; path_val * n*T^(n-1)
+	grad_fns = [dT]
+
+	return Tensor(val, parents, grad_fns)
+end</code></pre><h2 id="AutoGrad"><a class="docs-heading-anchor" href="#AutoGrad">AutoGrad</a><a id="AutoGrad-1"></a><a class="docs-heading-anchor-permalink" href="#AutoGrad" title="Permalink"></a></h2><p>Now, let&#39;s define the <code>autograd</code> engine, that&#39;ll move through the graph evaluating gradients. Code can be seen in <a href="https://github.com/tgautam03/jac/blob/master/src/AutoGrad.jl">AutoGrad.jl file</a>.</p><pre><code class="language-julia hljs">function autograd(T::Tensor)
+	gradients = Dict() # Dict to hold grads of T wrt all creators
+
+	function compute(node::Tensor, path_val::Tensor)
+		for (parent, grad_fn) in zip(node.parents, node.grad_fns)
+			# Chain Rule
+			parent_path_val = grad_fn(path_val)
+
+			# Checking if grad present or not
+			if haskey(gradients, parent)
+				gradients[parent] += parent_path_val
+			else
+				gradients[parent] = parent_path_val
+			end
+
+			# Recusive call
+			compute(parent, parent_path_val)
+		end
+	end
+
+	# Output Node
+	dT_dT = Tensor(1)
+	compute(T, dT_dT)
+
+	return gradients
+end</code></pre><h2 id="Conclusion"><a class="docs-heading-anchor" href="#Conclusion">Conclusion</a><a id="Conclusion-1"></a><a class="docs-heading-anchor-permalink" href="#Conclusion" title="Permalink"></a></h2><p>Code is now complete to perform Automatic Differentiation on Scalars. Example Usage can be seen <a href="https://tgautam03.github.io/jac/dev/Examples/Simple_Scalar_Arithmetics/">here</a>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../../Examples/Simple_Scalar_Arithmetics/">Introduction to Reverse Mode Automatic Differentiation on Scalars »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Wednesday 15 March 2023 02:30">Wednesday 15 March 2023</span>. Using Julia version 1.8.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
