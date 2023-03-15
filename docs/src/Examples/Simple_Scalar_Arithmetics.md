@@ -23,32 +23,36 @@ $$\frac{\partial d}{\partial c} = b = 3$$
 
 ### Automatic Differentiation
 - Importing the library.
+
     ```julia
     using jac
     ```
 - Initialising variables
+
     ```julia
     a = Tensor(5)
     b = Tensor(3)
     ```
 - Forward Pass (setting up graph)
+
     ```julia
     c = a + b
     d = c * b
     ```
 - Backward Pass (getting gradients)
+
     ```julia
-    ∂d = autograd(d)
+    ∂d = jac.autograd(d)
     ```
-    - $\frac{\partial d}{\partial a}$
+    - To get $\frac{\partial d}{\partial a}$
         ```julia
         ∂d[a]
         ```
-    - $\frac{\partial d}{\partial b}$
+    - To get $\frac{\partial d}{\partial b}$
         ```julia
         ∂d[b]
         ```
-    - $\frac{\partial d}{\partial c}$
+    - To get $\frac{\partial d}{\partial c}$
         ```julia
         ∂d[c]
         ```
