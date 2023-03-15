@@ -1,33 +1,26 @@
-include("Tensor.jl")
+function autograd(T::Tensor)
+	gradients = Dict() # Dict to hold grads of T wrt all creators
 
-function grad(T1::Tensor)
-    gradients = Dict() # Dictionary to hold gradients wrt T1
+	function compute(node::Tensor, path_val::Tensor)
+		for (parent, grad_fn) in zip(node.parents, node.grad_fns)
+			# Chain Rule
+			parent_path_val = grad_fn(path_val)
 
-    function compute_gradients(T::Tensor, path_value::Union{Real,Array})
-        #=
-        Description: # Function to fill up the gradients Dictionary initialised above
-        T: Gradient of Tensor T
-        path_value: The gradient value coming from T's children
-        =#
-        for (creator, grad_function) in zip(T.creators, T.grads)
-            # Applying Chain Rule
-            creator_path_value = grad_function(path_value)
+			# Checking if grad present or not
+			if haskey(gradients, parent)
+				gradients[parent] += parent_path_val
+			else
+				gradients[parent] = parent_path_val
+			end
 
-            if haskey(gradients, creator)
-                # Add the gradients where paths merge
-                gradients[creator] += creator_path_value
-            else
-                # Store the gradient if no merging
-                gradients[creator] = creator_path_value
-            end
+			# Recusive call
+			compute(parent, parent_path_val)
+		end
+	end
 
-            # Recursively call this function
-            compute_gradients(creator, creator_path_value)
-        end
-    end
+	# Output Node
+	dT_dT = Tensor(1)
+	compute(T, dT_dT)
 
-    # The top level case
-    compute_gradients(T1, ones(size(T1)))
-
-    return gradients
-end 
+	return gradients
+end

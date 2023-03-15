@@ -8,12 +8,10 @@ makedocs(
     pages = [
         "Home" => "index.md",
         "Development Blogs" => Any[
-            "Development/AD_0.1.md",
-            "Development/AD_0.5.md",
+            "Development/Scalar_AD.md",
         ],
         "Examples" => Any[
-            "Examples/Intro_AD.md",
-            "Examples/Basic_NN.md",
+            "Examples/Simple_Scalar_Arithmetics.md",
         ],
     ],
 )
