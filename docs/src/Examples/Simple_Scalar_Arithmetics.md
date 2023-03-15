@@ -44,6 +44,7 @@ d = c * b
 ```julia
 ∂d = jac.autograd(d)
 ```
+
     - To get $\frac{\partial d}{\partial a}$
     ```julia
     ∂d[a]
