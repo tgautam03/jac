@@ -14,4 +14,13 @@ export +
 include("ops/mul.jl")
 export *
 
+include("ops/sin.jl")
+export sin
+
+include("ops/cos.jl")
+export cos
+
+include("ops/pow.jl")
+export ^
+
 end # module jac
